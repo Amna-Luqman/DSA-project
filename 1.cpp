@@ -21,3 +21,12 @@ public:
     Room(string n="", string d="", bool l=false)
         : name(n), description(d), locked(l) {}
 };
+
+class Inventory {
+private:
+    stack<string> items;
+public:
+    void addItem(string item) {
+        items.push(item);
+        cout << "Added '" << item << "' to inventory.\n";
+    }
