@@ -31,7 +31,16 @@ public:
         cout << "Added '" << item << "' to inventory.\n";
     }
     
-    
+    bool useItem(string item) {
+        if (items.empty()) {
+            cout << "Inventory is empty.\n";
+            return false;
+        }
+        stack<string> temp;
+        bool found = false;
+        while (!items.empty()) {
+            string top = items.top();
+            items.pop();
     
     
     
