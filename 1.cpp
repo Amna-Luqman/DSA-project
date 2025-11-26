@@ -30,3 +30,45 @@ public:
         items.push(item);
         cout << "Added '" << item << "' to inventory.\n";
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  class Game{
+  	
+  	void start(){
+  		cout<<"Riphah International University"<<endl;
+  		cout<<"Escape Puzzle Game"<<endl;
+  		cout<<"Team members: Areeba noor , Amna luqman ,Bisma Amin ,Arooj fatima"<<endl;
+  		cout<<"Supervisor: Saleha Nasim"<<endl;
+  		
+  		cout<<"=================================="<<endl;
+  		
+  		cout<<"Type 'help' to see avaible commands"<<endl;
+  		help();	
+  		
+  		string cmd;
+  		while(true){
+  			if(health<=0){
+  				cout<<"health zero.Game Over"<<endl;
+  				return;
+			  }
+			  cout<<"Health"<<health<<endl;
+			  cout<<"["<<level->currentRoom<<"]>";
+			  getline(cin,cmd);
+			  if(!process(cmd))
+			  break;
+		  }
+	  }
+  	
+  } 
+    
+    
+    
