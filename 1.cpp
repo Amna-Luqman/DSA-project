@@ -31,16 +31,7 @@ public:
         cout << "Added '" << item << "' to inventory.\n";
     }
     
-    bool useItem(string item) {
-        if (items.empty()) {
-            cout << "Inventory is empty.\n";
-            return false;
-        }
-        stack<string> temp;
-        bool found = false;
-        while (!items.empty()) {
-            string top = items.top();
-            items.pop();
+    
     
     
     
@@ -51,6 +42,18 @@ public:
     
     
   class Game{
+  	
+  	private:
+  		Gamelevel* level;
+  		Inventory inv;
+  		int levelNum;
+  		int health;
+  		
+  	public:
+	  Game() : levelNum(1) , health(3){
+	  	srand(time(0));
+	  	level= new Gamelevel(levelNum);
+	  }	
   	
   	void start(){
   		cout<<"Riphah International University"<<endl;
