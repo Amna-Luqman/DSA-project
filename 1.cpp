@@ -116,8 +116,28 @@ class GameLevel {
 
         if (s == "quit") return false;
         if (s == "help") help();
+<<<<<<< Updated upstream
         
         
+=======
+        else if (s == "look") look();
+        else if (s == "inventory") inv.display();
+        else if (s.find("go ") == 0) go(c.substr(3));
+        else if (s.find("use ") == 0) use(c.substr(4));
+        else if (s == "save") save();
+        else if (s == "load") load();
+        else cout << "Invalid command.\n";
+
+        return true;
+    }
+
+    void go(string room) {
+        if (!level->moveTo(room)) {
+            cout << "Cannot go there.\n";
+            showConnected();
+            return;
+        }
+>>>>>>> Stashed changes
   	
   } 
     
