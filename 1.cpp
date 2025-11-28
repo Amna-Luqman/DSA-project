@@ -79,6 +79,11 @@ public:
 			  break;
 		  }
 	  }
+	   bool process(string c) {
+        string s = lower(c);
+
+        if (s == "quit") return false;
+        if (s == "help") help();
   	
   } 
     
