@@ -30,7 +30,19 @@ public:
         items.push(item);
         cout << "Added '" << item << "' to inventory.\n";
     }
-    
+    string top = items.top();
+            items.pop();
+            if (top == item) {
+                found = true;
+                cout << "Used '" << item << "'.\n";
+                break;
+            }
+            temp.push(top);
+        }
+        while (!temp.empty()) { items.push(temp.top()); temp.pop(); }
+        if (!found) cout << "Item not found.\n";
+        return found;
+    }   
     
     
     
