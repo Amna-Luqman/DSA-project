@@ -36,7 +36,27 @@ public:
     
     
     
-    
+class GameLevel {
+    bool solveRiddle() {
+        int idx = rand() % riddles.size();
+        cout << "Riddle: " << riddles[idx].first << endl;
+        cout << "Answer: ";
+        string ans;
+        getline(cin, ans);
+        return lower(ans) == riddles[idx].second;
+    }
+
+    bool isLocked(string room) { return rooms[room]->locked; }
+    void unlock(string room) { rooms[room]->locked = false; }
+
+    Room* getRoom() { return rooms[currentRoom]; }
+    bool complete() { return currentRoom == endRoom; }
+
+    string lower(string s) {
+        transform(s.begin(), s.end(), s.begin(), ::tolower);
+        return s;
+    }
+};
     
     
     
@@ -84,6 +104,8 @@ public:
 
         if (s == "quit") return false;
         if (s == "help") help();
+        
+        
   	
   } 
     
