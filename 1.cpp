@@ -129,11 +129,7 @@ class GameLevel {
 
         if (s == "quit") return false;
         if (s == "help") help();
-<<<<<<< Updated upstream
-        
-        
-=======
-        else if (s == "look") look();
+         else if (s == "look") look();
         else if (s == "inventory") inv.display();
         else if (s.find("go ") == 0) go(c.substr(3));
         else if (s.find("use ") == 0) use(c.substr(4));
@@ -150,9 +146,39 @@ class GameLevel {
             showConnected();
             return;
         }
->>>>>>> Stashed changes
-  	
-  } 
-    
+
+        string cr = level->currentRoom;
+
+        if (level->isLocked(cr)) {
+            cout << "Room is locked. Solve riddle to unlock.\n";
+            if (level->solveRiddle()) {
+                level->unlock(cr);
+                cout << "Room unlocked.\n";
+                inv.addItem("mystic_token");
+            } else {
+                cout << "Incorrect. You cannot enter.\n";
+                health--;
+                level->currentRoom = level->startRoom;
+                cout << "Returned to start of level.\n";
+                return;
+            }
+        }
+
+        look();
+         if (level->complete()) {
+            cout << "LEVEL COMPLETE.\n";
+            if (levelNum < 4) {
+                levelNum++;
+                delete level;
+                level = new GameLevel(levelNum);
+                cout << "LEVEL " << levelNum << " STARTED.\n";
+                look();
+            } else {
+                cout << "GAME COMPLETED.\n";
+            }
+        }
+    }
+
+
     
     
