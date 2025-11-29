@@ -163,21 +163,7 @@ class GameLevel {
                 return;
             }
         }
-
-        look();
-         if (level->complete()) {
-            cout << "LEVEL COMPLETE.\n";
-            if (levelNum < 4) {
-                levelNum++;
-                delete level;
-                level = new GameLevel(levelNum);
-                cout << "LEVEL " << levelNum << " STARTED.\n";
-                look();
-            } else {
-                cout << "GAME COMPLETED.\n";
-            }
-        }
-    }
+  
 
 
     
