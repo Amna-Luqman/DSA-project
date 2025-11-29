@@ -43,20 +43,7 @@ public:
         if (!found) cout << "Item not found.\n";
         return found;
     }   
-     void display() {
-        if (items.empty()) {
-            cout << "Inventory empty.\n";
-            return;
-        }
-        stack<string> temp = items;
-        cout << "Inventory: ";
-        vector<string> v;
-        while (!temp.empty()) { v.push_back(temp.top()); temp.pop(); }
-        for (int i = 0; i < v.size(); i++)
-            cout << v[i] << (i < v.size()-1 ? ", " : "");
-        cout << endl;
-    }
-
+    
     
     
     
@@ -178,6 +165,74 @@ class GameLevel {
             }
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    void look() {
+        Room* r = level->getRoom();
+        cout << r->name << ": " << r->description << endl;
+        showConnected();
+    }
+
+    void showConnected() {
+        auto c = level->getConnected(level->currentRoom);
+        cout << "Connected rooms: ";
+        for (int i = 0; i < c.size(); i++)
+            cout << c[i] << (i < c.size()-1 ? ", " : "");
+        cout << endl;
+    }
+
+    void help() {
+        cout << "====================== COMMANDS ======================\n";
+        cout << "go <room>       - Move to a connected room\n";
+        cout << "look            - Describe the current room\n";
+        cout << "inventory       - Show items in your inventory\n";
+        cout << "use <item>      - Use an item (e.g., mystic_token to heal)\n";
+        cout << "save            - Save current game state\n";
+        cout << "load            - Load saved game state\n";
+        cout << "help            - Show this help message\n";
+        cout << "quit            - Exit the game\n";
+        cout << "=====================================================\n";
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
     
