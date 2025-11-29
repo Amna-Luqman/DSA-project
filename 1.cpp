@@ -43,7 +43,20 @@ public:
         if (!found) cout << "Item not found.\n";
         return found;
     }   
-    
+     void display() {
+        if (items.empty()) {
+            cout << "Inventory empty.\n";
+            return;
+        }
+        stack<string> temp = items;
+        cout << "Inventory: ";
+        vector<string> v;
+        while (!temp.empty()) { v.push_back(temp.top()); temp.pop(); }
+        for (int i = 0; i < v.size(); i++)
+            cout << v[i] << (i < v.size()-1 ? ", " : "");
+        cout << endl;
+    }
+
     
     
     
