@@ -150,6 +150,7 @@ class GameLevel {
                 return;
             }
         }
+<<<<<<< HEAD
 
         look();
          if (level->complete()) {
@@ -233,6 +234,9 @@ class GameLevel {
     
     
     
+=======
+  
+>>>>>>> 0edb87d0669f940143ec12e12afb7cc5420384c0
 
 
     
