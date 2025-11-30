@@ -56,10 +56,9 @@ public:
             cout << v[i] << (i < v.size()-1 ? ", " : "");
         cout << endl;
     }
-
-    
-    
-    
+    stack<string> getItems() { return items; }
+    void setItems(stack<string> s) { items = s; }
+};
     
 class GameLevel {
     bool solveRiddle() {
