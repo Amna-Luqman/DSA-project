@@ -163,10 +163,10 @@ class GameLevel {
                 return;
             }
         }
-<<<<<<< HEAD
-
+        
         look();
-         if (level->complete()) {
+
+        if (level->complete()) {
             cout << "LEVEL COMPLETE.\n";
             if (levelNum < 4) {
                 levelNum++;
@@ -179,30 +179,16 @@ class GameLevel {
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    void use(string item) {
+        if (inv.useItem(item)) {
+            if (item == "mystic_token") {
+                health++;
+                cout << "Health increased to " << health << endl;
+            }
+        }
+    }
+
     
     void look() {
         Room* r = level->getRoom();
