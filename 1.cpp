@@ -43,6 +43,7 @@ public:
         if (!found) cout << "Item not found.\n";
         return found;
     }   
+<<<<<<< HEAD
      void display() {
         if (items.empty()) {
             cout << "Inventory empty.\n";
@@ -59,7 +60,7 @@ public:
     stack<string> getItems() { return items; }
     void setItems(stack<string> s) { items = s; }
 };
-    
+
 class GameLevel {
     bool solveRiddle() {
         int idx = rand() % riddles.size();
@@ -128,11 +129,7 @@ class GameLevel {
 
         if (s == "quit") return false;
         if (s == "help") help();
-<<<<<<< Updated upstream
-        
-        
-=======
-        else if (s == "look") look();
+         else if (s == "look") look();
         else if (s == "inventory") inv.display();
         else if (s.find("go ") == 0) go(c.substr(3));
         else if (s.find("use ") == 0) use(c.substr(4));
@@ -149,9 +146,111 @@ class GameLevel {
             showConnected();
             return;
         }
->>>>>>> Stashed changes
-  	
-  } 
+
+        string cr = level->currentRoom;
+
+        if (level->isLocked(cr)) {
+            cout << "Room is locked. Solve riddle to unlock.\n";
+            if (level->solveRiddle()) {
+                level->unlock(cr);
+                cout << "Room unlocked.\n";
+                inv.addItem("mystic_token");
+            } else {
+                cout << "Incorrect. You cannot enter.\n";
+                health--;
+                level->currentRoom = level->startRoom;
+                cout << "Returned to start of level.\n";
+                return;
+            }
+        }
+<<<<<<< HEAD
+
+        look();
+         if (level->complete()) {
+            cout << "LEVEL COMPLETE.\n";
+            if (levelNum < 4) {
+                levelNum++;
+                delete level;
+                level = new GameLevel(levelNum);
+                cout << "LEVEL " << levelNum << " STARTED.\n";
+                look();
+            } else {
+                cout << "GAME COMPLETED.\n";
+            }
+        }
+    }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    void look() {
+        Room* r = level->getRoom();
+        cout << r->name << ": " << r->description << endl;
+        showConnected();
+    }
+
+    void showConnected() {
+        auto c = level->getConnected(level->currentRoom);
+        cout << "Connected rooms: ";
+        for (int i = 0; i < c.size(); i++)
+            cout << c[i] << (i < c.size()-1 ? ", " : "");
+        cout << endl;
+    }
+
+    void help() {
+        cout << "====================== COMMANDS ======================\n";
+        cout << "go <room>       - Move to a connected room\n";
+        cout << "look            - Describe the current room\n";
+        cout << "inventory       - Show items in your inventory\n";
+        cout << "use <item>      - Use an item (e.g., mystic_token to heal)\n";
+        cout << "save            - Save current game state\n";
+        cout << "load            - Load saved game state\n";
+        cout << "help            - Show this help message\n";
+        cout << "quit            - Exit the game\n";
+        cout << "=====================================================\n";
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+=======
+  
+>>>>>>> 0edb87d0669f940143ec12e12afb7cc5420384c0
+
+
     
     
