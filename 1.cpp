@@ -10,7 +10,9 @@
 #include <cctype>
 using namespace std;
 
-
+/////////////////////////////////////////////////////////
+// ROOM CLASS
+/////////////////////////////////////////////////////////
 class Room {
 public:
     string name;
@@ -22,6 +24,9 @@ public:
         : name(n), description(d), locked(l) {}
 };
 
+/////////////////////////////////////////////////////////
+// INVENTORY CLASS (STACK BASED)
+/////////////////////////////////////////////////////////
 class Inventory {
 private:
     stack<string> items;
@@ -30,7 +35,15 @@ public:
         items.push(item);
         cout << "Added '" << item << "' to inventory.\n";
     }
-    string top = items.top();
+    bool useItem(string item) {
+        if (items.empty()) {
+            cout << "Inventory is empty.\n";
+            return false;
+        }
+        stack<string> temp;
+        bool found = false;
+        while (!items.empty()) {
+            string top = items.top();
             items.pop();
             if (top == item) {
                 found = true;
@@ -42,9 +55,8 @@ public:
         while (!temp.empty()) { items.push(temp.top()); temp.pop(); }
         if (!found) cout << "Item not found.\n";
         return found;
-    }   
-<<<<<<< HEAD
-     void display() {
+    }
+    void display() {
         if (items.empty()) {
             cout << "Inventory empty.\n";
             return;
@@ -58,10 +70,110 @@ public:
         cout << endl;
     }
     stack<string> getItems() { return items; }
-    void setItems(stack<string> s) { items = s; }
+    void setItems(stack<string> s) { items = s; }
 };
 
+/////////////////////////////////////////////////////////
+// GAME LEVEL CLASS
+/////////////////////////////////////////////////////////
 class GameLevel {
+private:
+    map<string, Room*> rooms;
+    map<string, vector<string>> adj;
+
+    vector<pair<string,string>> riddles = {
+        {"I speak without a mouth and hear without ears. What am I?", "echo"},
+        {"The more you take, the more you leave behind. What am I?", "footsteps"},
+        {"What has keys but cannot open locks?", "piano"},
+        {"What has to be broken before you can use it?", "egg"},
+        {"I am tall when young and short when old. What am I?", "candle"}
+    };
+
+public:
+    string currentRoom, startRoom, endRoom;
+    int level;
+
+    GameLevel(int lvl) : level(lvl) { init(); }
+
+    void init() {
+        if (level == 1) {
+            rooms["entrance"] = new Room("entrance","Castle entrance.",false);
+            rooms["hall"] = new Room("hall","Great castle hall.",false);
+            rooms["armory"] = new Room("armory","Old armory.",true);
+            rooms["library"] = new Room("library","Ancient library.",true);
+            rooms["throne"] = new Room("throne","Throne chamber.",false);
+
+            connect("entrance","hall");
+            connect("hall","armory");
+            connect("hall","library");
+            connect("library","throne");
+
+            startRoom = "entrance";
+            endRoom = "throne";
+        }
+        else if (level == 2) {
+            rooms["garden"] = new Room("garden","Mystic garden.",false);
+            rooms["pond"] = new Room("pond","Quiet pond.",false);
+            rooms["grove"] = new Room("grove","Sacred grove.",true);
+            rooms["arch"] = new Room("arch","Stone archway.",true);
+            rooms["gate"] = new Room("gate","Gate to next realm.",false);
+
+            connect("garden","pond");
+            connect("pond","grove");
+            connect("grove","arch");
+            connect("arch","gate");
+
+            startRoom = "garden";
+            endRoom = "gate";
+        }
+        else if (level == 3) {
+            rooms["dungeon"] = new Room("dungeon","Dark dungeon.",false);
+            rooms["cells"] = new Room("cells","Prison cells.",true);
+            rooms["crypt"] = new Room("crypt","Ancient crypt.",true);
+            rooms["pit"] = new Room("pit","Deep pit.",false);
+            rooms["altar"] = new Room("altar","Hidden altar.",false);
+
+            connect("dungeon","cells");
+            connect("cells","crypt");
+            connect("crypt","altar");
+            connect("altar","pit");
+
+            startRoom = "dungeon";
+            endRoom = "pit";
+        }
+        else {
+            rooms["tower"] = new Room("tower","High tower.",false);
+            rooms["hall2"] = new Room("hall2","King's hall.",true);
+            rooms["vault"] = new Room("vault","Treasure vault.",true);
+            rooms["chamber"] = new Room("chamber","Final chamber.",false);
+            rooms["crown"] = new Room("crown","Crown room. Final prize.",false);
+
+            connect("tower","hall2");
+            connect("hall2","vault");
+            connect("vault","chamber");
+            connect("chamber","crown");
+
+            startRoom = "tower";
+            endRoom = "crown";
+        }
+
+        currentRoom = startRoom;
+    }
+
+    void connect(string a, string b) {
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+
+    vector<string> getConnected(string r) { return adj[r]; }
+
+    bool moveTo(string target) {
+        string t = lower(target);
+        for (string x : adj[currentRoom])
+            if (lower(x) == t) { currentRoom = x; return true; }
+        return false;
+    }
+
     bool solveRiddle() {
         int idx = rand() % riddles.size();
         cout << "Riddle: " << riddles[idx].first << endl;
@@ -82,54 +194,51 @@ class GameLevel {
         return s;
     }
 };
-    
-    
-    
-    
-  class Game{
-  	
-  	private:
-  		Gamelevel* level;
-  		Inventory inv;
-  		int levelNum;
-  		int health;
-  		
-  	public:
-	  Game() : levelNum(1) , health(3){
-	  	srand(time(0));
-	  	level= new Gamelevel(levelNum);
-	  }	
-  	
-  	void start(){
-  		cout<<"Riphah International University"<<endl;
-  		cout<<"Escape Puzzle Game"<<endl;
-  		cout<<"Team members: Areeba noor , Amna luqman ,Bisma Amin ,Arooj fatima"<<endl;
-  		cout<<"Supervisor: Saleha Nasim"<<endl;
-  		
-  		cout<<"=================================="<<endl;
-  		
-  		cout<<"Type 'help' to see avaible commands"<<endl;
-  		help();	
-  		
-  		string cmd;
-  		while(true){
-  			if(health<=0){
-  				cout<<"health zero.Game Over"<<endl;
-  				return;
-			  }
-			  cout<<"Health"<<health<<endl;
-			  cout<<"["<<level->currentRoom<<"]>";
-			  getline(cin,cmd);
-			  if(!process(cmd))
-			  break;
-		  }
-	  }
-	   bool process(string c) {
+
+/////////////////////////////////////////////////////////
+// MAIN GAME CLASS
+/////////////////////////////////////////////////////////
+class Game {
+private:
+    GameLevel* level;
+    Inventory inv;
+    int levelNum;
+    int health;
+
+public:
+    Game() : levelNum(1), health(3) {
+        srand(time(0));
+        level = new GameLevel(levelNum);
+    }
+
+    void start() {
+        cout << "RIPHAH INTERNATIONAL UNIVERSITY\n";
+        cout << "ESCAPE PUZZLE GAME\n";
+        cout << "Team: Areeba Noor, Amna Luqman, Arooj Fatima, Bisma Amin\n";
+        cout << "Supervisor: Saleha Nasim\n";
+        cout << "=====================================\n";
+        cout << "Type 'help' to see available commands.\n";
+        help();
+
+        string cmd;
+        while (true) {
+            if (health <= 0) {
+                cout << "Health zero. Game Over.\n";
+                return;
+            }
+            cout << "\nHealth: " << health << "\n";
+            cout << "[" << level->currentRoom << "] > ";
+            getline(cin, cmd);
+            if (!process(cmd)) break;
+        }
+    }
+
+    bool process(string c) {
         string s = lower(c);
 
         if (s == "quit") return false;
         if (s == "help") help();
-         else if (s == "look") look();
+        else if (s == "look") look();
         else if (s == "inventory") inv.display();
         else if (s.find("go ") == 0) go(c.substr(3));
         else if (s.find("use ") == 0) use(c.substr(4));
@@ -163,7 +272,7 @@ class GameLevel {
                 return;
             }
         }
-        
+
         look();
 
         if (level->complete()) {
@@ -189,7 +298,6 @@ class GameLevel {
         }
     }
 
-    
     void look() {
         Room* r = level->getRoom();
         cout << r->name << ": " << r->description << endl;
@@ -217,26 +325,60 @@ class GameLevel {
         cout << "=====================================================\n";
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-=======
-  
->>>>>>> 0edb87d0669f940143ec12e12afb7cc5420384c0
+    void save() {
+        ofstream f("save.txt");
+        f << levelNum << endl;
+        f << level->currentRoom << endl;
+        f << health << endl;
 
+        stack<string> s = inv.getItems();
+        vector<string> v;
+        while (!s.empty()) { v.push_back(s.top()); s.pop(); }
+        f << v.size() << endl;
+        for (string x : v) f << x << endl;
 
-    
-    
+        f.close();
+        cout << "Game saved.\n";
+    }
+
+    void load() {
+        ifstream f("save.txt");
+        if (!f) { cout << "No save file.\n"; return; }
+
+        f >> levelNum;
+        f.ignore();
+        string room;
+        getline(f, room);
+        f >> health;
+        f.ignore();
+
+        int n; f >> n; f.ignore();
+        stack<string> st;
+        for (int i = 0; i < n; i++) {
+            string x; getline(f, x);
+            st.push(x);
+        }
+
+        delete level;
+        level = new GameLevel(levelNum);
+        level->currentRoom = room;
+        inv.setItems(st);
+
+        cout << "Game loaded.\n";
+        look();
+    }
+
+    string lower(string s) {
+        transform(s.begin(), s.end(), s.begin(), ::tolower);
+        return s;
+    }
+};
+
+/////////////////////////////////////////////////////////
+// MAIN
+/////////////////////////////////////////////////////////
+int main() {
+    Game g;
+    g.start();
+    return 0;
+}
