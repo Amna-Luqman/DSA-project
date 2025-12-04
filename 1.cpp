@@ -33,11 +33,11 @@ private:
 public:
     void addItem(string item) {
         items.push(item);
-        cout << "Added '" << item << "' to inventory.\n";
+        cout << "Added '" << item << "' to inventory."<<endl;
     }
     bool useItem(string item) {
         if (items.empty()) {
-            cout << "Inventory is empty.\n";
+            cout << "Inventory is empty"<<endl;
             return false;
         }
         stack<string> temp;
@@ -47,18 +47,18 @@ public:
             items.pop();
             if (top == item) {
                 found = true;
-                cout << "Used '" << item << "'.\n";
+                cout << "Used '" << item<<endl;
                 break;
             }
             temp.push(top);
         }
         while (!temp.empty()) { items.push(temp.top()); temp.pop(); }
-        if (!found) cout << "Item not found.\n";
+        if (!found) cout << "Item not found"<<endl;
         return found;
     }
     void display() {
         if (items.empty()) {
-            cout << "Inventory empty.\n";
+            cout << "Inventory empty"<<endl;
             return;
         }
         stack<string> temp = items;
@@ -212,21 +212,21 @@ public:
     }
 
     void start() {
-        cout << "RIPHAH INTERNATIONAL UNIVERSITY\n";
-        cout << "ESCAPE PUZZLE GAME\n";
-        cout << "Team: Areeba Noor, Amna Luqman, Arooj Fatima, Bisma Amin\n";
-        cout << "Supervisor: Saleha Nasim\n";
-        cout << "=====================================\n";
-        cout << "Type 'help' to see available commands.\n";
+        cout << "RIPHAH INTERNATIONAL UNIVERSITY"<<endl;
+        cout << "ESCAPE PUZZLE GAME"<<endl;
+        cout << "Team: Areeba Noor, Amna Luqman, Arooj Fatima, Bisma Amin"<<endl;
+        cout << "Supervisor: Saleha Nasim"<<endl;
+        cout << "====================================="<<endl;
+        cout << "Type 'help' to see available commands"<<endl;
         help();
 
         string cmd;
         while (true) {
             if (health <= 0) {
-                cout << "Health zero. Game Over.\n";
+                cout << "Health zero. Game Over"<<endl;
                 return;
             }
-            cout << "\nHealth: " << health << "\n";
+            cout << "\nHealth: " << health <<endl;
             cout << "[" << level->currentRoom << "] > ";
             getline(cin, cmd);
             if (!process(cmd)) break;
@@ -244,14 +244,14 @@ public:
         else if (s.find("use ") == 0) use(c.substr(4));
         else if (s == "save") save();
         else if (s == "load") load();
-        else cout << "Invalid command.\n";
+        else cout << "Invalid command."<<endl;
 
         return true;
     }
 
     void go(string room) {
         if (!level->moveTo(room)) {
-            cout << "Cannot go there.\n";
+            cout << "Cannot go there"<<endl;
             showConnected();
             return;
         }
@@ -264,11 +264,21 @@ public:
                 level->unlock(cr);
                 cout << "Room unlocked.\n";
                 inv.addItem("mystic_token");
+                
+                int count = 0;
+                stack<string> temp = inv.getItems();
+                while (!temp.empty()) { 
+				if (temp.top() == "mystic_token"){
+				count++; 
+				temp.pop(); 
+				}
+				}
+                cout << "You now have " << count << " mystic_token"<<endl;
             } else {
-                cout << "Incorrect. You cannot enter.\n";
+                cout << "Incorrect. You cannot enter"<<endl;
                 health--;
                 level->currentRoom = level->startRoom;
-                cout << "Returned to start of level.\n";
+                cout << "Returned to start of level"<<endl;
                 return;
             }
         }
@@ -276,15 +286,15 @@ public:
         look();
 
         if (level->complete()) {
-            cout << "LEVEL COMPLETE.\n";
+            cout << "LEVEL COMPLETE"<<endl;
             if (levelNum < 4) {
                 levelNum++;
                 delete level;
                 level = new GameLevel(levelNum);
-                cout << "LEVEL " << levelNum << " STARTED.\n";
+                cout << "LEVEL " << levelNum << " STARTED"<<endl;
                 look();
             } else {
-                cout << "GAME COMPLETED.\n";
+                cout << "GAME COMPLETED"<<endl;
             }
         }
     }
@@ -313,15 +323,15 @@ public:
     }
 
     void help() {
-        cout << "====================== COMMANDS ======================\n";
-        cout << "go <room>       - Move to a connected room\n";
-        cout << "look            - Describe the current room\n";
+        cout << "====================== COMMANDS ======================"<<endl;
+        cout << "go <room>       - Move to a connected room"<<endl;
+        cout << "look            - Describe the current room"<<endl;
         cout << "inventory       - Show items in your inventory\n";
-        cout << "use <item>      - Use an item (e.g., mystic_token to heal)\n";
-        cout << "save            - Save current game state\n";
-        cout << "load            - Load saved game state\n";
-        cout << "help            - Show this help message\n";
-        cout << "quit            - Exit the game\n";
+        cout << "use <item>      - Use an item (e.g., mystic_token to heal)"<<endl;
+        cout << "save            - Save current game state"<<endl;
+        cout << "load            - Load saved game state"<<endl;
+        cout << "help            - Show this help message"<<endl;
+        cout << "quit            - Exit the game"<<endl;
         cout << "=====================================================\n";
     }
 
@@ -338,12 +348,12 @@ public:
         for (string x : v) f << x << endl;
 
         f.close();
-        cout << "Game saved.\n";
+        cout << "Game saved"<<endl;
     }
 
     void load() {
         ifstream f("save.txt");
-        if (!f) { cout << "No save file.\n"; return; }
+        if (!f) { cout << "No save file."<<endl; return; }
 
         f >> levelNum;
         f.ignore();
@@ -364,7 +374,7 @@ public:
         level->currentRoom = room;
         inv.setItems(st);
 
-        cout << "Game loaded.\n";
+        cout << "Game loaded"<<endl;
         look();
     }
 
